@@ -1,8 +1,19 @@
-import re
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
-hashtagi = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed #texting eget mattis sem. Mauris #frasista " \
-           "egestas erat #tweetext quam, ut faucibus eros #frasier congue et. In blandit, mi eu porta lobortis, " \
-           "tortor nisl facilisis leo, at tristique #frasistas augue risus eu risus."
+tekst = """ <p> Text mining, also :-) ;-) known as text data mining, is the process of transforming unstructured text 
+into astructured format to identify meaningful patterns and new insights. By applying advanced analytical techniques, 
+such as Naïve Bayes, Support Vector Machines (SVM), and 43 other deep learning algorithms, companies are able to 
+<b>explore and discover ;) ;( hidden relationships within their unstructured data.<b>
+i me my<p>
+"""
 
-znalezione_hashe = re.findall(r"#[a-z0-9_]+", hashtagi)
-print(znalezione_hashe)
+
+def usun_stop_words(t: str) -> list:
+    stop_words = stopwords.words("english")
+    word_tokens = word_tokenize(t)
+    filtrowany_tekst = [w for w in word_tokens if not w.lower() in stop_words]
+    return filtrowany_tekst
+
+
+print(usun_stop_words(tekst))

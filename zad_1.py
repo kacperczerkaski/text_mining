@@ -1,18 +1,22 @@
 import re
 
-liczby = "Dzisiaj mamy 4 stopnie na plusie, 1 marca 2022 roku"
+tekst = """ <p> Text mining, also :-) ;-) known as text data mining, is the process of transforming unstructured text 
+into astructured format to identify meaningful patterns and new insights. By applying advanced analytical techniques, 
+such as Naïve Bayes, Support Vector Machines (SVM), and 43 other deep learning algorithms, companies are able to 
+<b>explore and discover ;) ;( hidden relationships within their unstructured data.<b>
+123324 <p>
+"""
 
-usuwanie_liczb = re.sub("[0-9]+", "", liczby)
-print(usuwanie_liczb)
 
-znaki_html = "<div><h2>Header</h2> <p>article<b>strong text</b> <a href="">link</a></p></div>"
+def czyszczenie_tekstu(t: str) -> str:
+    emotikony = re.findall(r"[;|:][-]?[\)|\(|<|>]", t)
+    tekst_male = t.lower()
+    usun_liczby = re.sub(r"\d", "", tekst_male)
+    usun_html = re.sub(r"<.*?>", "", usun_liczby)
+    usun_interp = re.sub(r"[^\w\s]", '', usun_html)
+    usun_spacje = usun_interp.strip()
+    oczyszczony = usun_spacje + ' '.join(emotikony)
+    return oczyszczony
 
-usuwanie_html = re.sub(r"<.*?>", "", znaki_html)
-print(usuwanie_html)
 
-interpunkcja = "Lorem ipsum dolor sit amet, consectetur; adipiscing elit. Sed eget mattis sem. Mauris egestas erat " \
-               "quam, ut faucibus eros congue et. In blandit, mi eu porta; lobortis, tortor nisl facilisis leo, at " \
-               "tristique augue risus eu risus."
-
-usuwanie_interpunkcji = re.sub("[.;,]+", "", interpunkcja)
-print(usuwanie_interpunkcji)
+print(czyszczenie_tekstu(tekst))

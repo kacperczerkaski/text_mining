@@ -1,4 +1,5 @@
 import re
+from nltk import PorterStemmer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
@@ -16,6 +17,17 @@ def czyszczenie_tekstu(t: str) -> str:
 
 def usun_stop_words(t: str) -> str:
     stop_words = stopwords.words("english")
-    word_tokens = word_tokenize(t)
-    filtrowany_tekst = [w for w in word_tokens if not w.lower() in stop_words]
+    filtrowany_tekst = [w for w in t if not w.lower() in stop_words]
     return filtrowany_tekst
+
+
+def stemming(t: str) -> str:
+    ps = PorterStemmer()
+    return ps.stem(t)
+
+
+def tokenizowanie_tekstu(t: str):
+    oczyszczony = czyszczenie_tekstu(t)
+    tokeny = word_tokenize(oczyszczony)
+    bez_stop_words = usun_stop_words(tokeny)
+    return [stemming(w) for w in bez_stop_words if len(w) > 3]
